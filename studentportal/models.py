@@ -15,7 +15,7 @@ class Course(models.Model):
 
 
 class Registration(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE() )
-    course = models.ForeignKey(Course, on_delete=models.CASCADE())
-date_created = models.DateTimeField(default=timezone.now)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    date_created = models.DateTimeField(default=timezone.now)
 
