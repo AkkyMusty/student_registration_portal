@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Students</title>
+</head>
+<body>
+    <h1>All Students</h1>
+
+    <ul>
+        {% for student in students %}
+            <li>
+                {{ student.name }} — {{ student.matric_number }}
+            </li>
+        {% empty %}
+            <li>No Students found.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
