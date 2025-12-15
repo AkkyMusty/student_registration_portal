@@ -26,3 +26,6 @@ def add_course(request):
 def student_list(request):
     students = Student.objects.all()
     return render(request, 'student/student_list.html', {'students': students})
+
+def register_student_to_course(request):
+    return render(request, 'registration/', {})
