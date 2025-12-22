@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Registrations</title>
+</head>
+<body>
+    <h1>Course Registrations</h1>
+
+    <ul>
+        {% for reg in registrations %}
+            <li>
+                {{ reg.student.name }}
+                → {{ reg.course.code }} ({{ reg.course.title }})
+            </li>
+        {% empty %}
+            <li>No registrations yet.</li>
+        {% endfor %}
+    </ul>
+
+    <p>
+        <a href="{% url 'register_student' %}">Register a student</a>
+    </p>
+</body>
+</html>

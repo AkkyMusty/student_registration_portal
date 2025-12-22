@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Courses</title>
+</head>
+<body>
+    <h1>All Courses</h1>
+
+    <ul>
+        {% for course in courses %}
+            <li>
+                {{ course.title }} — {{ course.code }}
+            </li>
+        {% empty %}
+            <li>No Course found.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
