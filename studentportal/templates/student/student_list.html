@@ -9,7 +9,9 @@
     <ul>
         {% for student in students %}
             <li>
+                 <a href="{% url 'student_detail' student.id %}">
                 {{ student.name }} — {{ student.matric_number }}
+                 </a>
             </li>
         {% empty %}
             <li>No Students found.</li>

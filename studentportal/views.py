@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import StudentForm, CourseForm, RegistrationForm
-from .models import Student, Course, Registration
+from .forms import StudentForm, CourseForm, StudentCourseForm
+from .models import Student, Course
 
 # Create your views here.
 
@@ -33,21 +33,20 @@ def course_list(request):
     courses = Course.objects.all()
     return render(request, 'course/course_list.html', {'courses': courses})
 
-def register_student(request):
+def student_detail(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
+        form = StudentCourseForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return redirect('registration_list')
     else:
-        form = RegistrationForm()
+        form = StudentCourseForm(instance=student)
 
-    return render(request, 'registration/register_student.html', {'form': form})
+    return render(request, 'student/student_detail.html', {
+        'student': student,
+        'form': form,
+        'courses': student.courses.all(),
+    })
 
-def registration_list(request):
-    registrations = Registration.objects.select_related('student', 'course')
-    return render(
-        request,
-        'registration/registration_list.html',
-        {'registrations': registrations}
-    )
+
