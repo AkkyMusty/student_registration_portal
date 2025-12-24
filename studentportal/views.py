@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 
 from .forms import StudentForm, CourseForm, StudentCourseForm
 from .models import Student, Course
@@ -26,8 +27,21 @@ def add_course(request):
     return render(request, 'course/add_course.html', {'form': form})
 
 def student_list(request):
-    students = Student.objects.all()
-    return render(request, 'student/student_list.html', {'students': students})
+    query = request.GET.get('q', '')
+
+    if query:
+        students = Student.objects.filter(
+            Q(name__icontains=query) |
+            Q(email__icontains=query) |
+            Q(matric_number__icontains=query)
+        )
+    else:
+        students = Student.objects.all()
+
+    return render(request, 'student/student_list.html', {
+        'students': students,
+        'query': query,
+    })
 
 def course_list(request):
     courses = Course.objects.all()
