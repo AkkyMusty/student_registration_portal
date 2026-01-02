@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .forms import StudentForm, CourseForm, StudentCourseForm
 from .models import Student, Course
@@ -62,5 +65,39 @@ def student_detail(request, student_id):
         'form': form,
         'courses': student.courses.all(),
     })
+
+def student_login(request):
+    error = None
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('student_dashboard')
+        else:
+            error = "Invalid credentials"
+
+    return render(request, 'auth/login.html', {'error': error})
+
+
+@login_required
+def student_dashboard(request):
+    student = request.user.student
+    return render(request, 'student/dashboard.html', {
+        'student': student,
+        'courses': student.courses.all()
+    })
+
+@staff_member_required
+def admin_dashboard(request):
+    return render(request, 'admin/dashboard.html', {
+        'student_count': Student.objects.count(),
+        'course_count': Course.objects.count(),
+        'total_enrollments': Student.objects.filter(courses__isnull=False).count(),
+    })
+
+
 
 
