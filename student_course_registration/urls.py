@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from studentportal.views import (add_student, add_course, student_list, course_list, student_detail, student_dashboard, student_login)
+from studentportal.views import (add_student, add_course, student_list, course_list, student_detail, student_dashboard, student_login, create_student_account)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +27,7 @@ urlpatterns = [
     path('students/<int:student_id>/', student_detail, name='student_detail'),
     path('login/', student_login, name='login'),
     path('dashboard/', student_dashboard, name='student_dashboard'),
+    path('dashboard/create-student/', create_student_account, name='create_student'),
+
 
 ]

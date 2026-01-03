@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
-from .forms import StudentForm, CourseForm, StudentCourseForm
+from .forms import StudentForm, StudentCreationForm, CourseForm, StudentCourseForm
 from .models import Student, Course
 
 # Create your views here.
@@ -98,6 +98,15 @@ def admin_dashboard(request):
         'total_enrollments': Student.objects.filter(courses__isnull=False).count(),
     })
 
+def create_student_account(request):
+    if request.method == "POST":
+        form = StudentCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student_list')
+    else:
+        form = StudentCreationForm()
 
+    return render(request, 'student/create_student.html', {'form': form})
 
 
